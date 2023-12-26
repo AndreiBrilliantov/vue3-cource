@@ -8,7 +8,8 @@
         Создать пост
       </my-button>
       <my-select
-
+        v-model="selectedSort"
+        :options="sortOptions"
       />
     </div>
 
@@ -43,6 +44,11 @@ export default {
       posts: [],
       dialogVisible: false,
       isPostsLoading: false,
+      selectedSort: '',
+      sortOptions: [
+        {value: 'title', name: 'По названию'},
+        {value: 'body', name: 'По описанию'}
+      ],
 
       listHeader: {listTitle: 'Название поста', listbody: 'Описание'},
     }
