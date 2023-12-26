@@ -1,7 +1,7 @@
 <template>
   <div class="post">
-    <div>Post Name: {{ post.title }}</div>
-    <div>Post Description: {{ post.body}}</div>
+    <div>{{ listTitle }}: {{ post.title }}</div>
+    <div>{{ listBody }}: {{ post.body}}</div>
   </div>
 </template>
 
@@ -11,6 +11,12 @@ export default {
     post: {
       type: Object,
       required: true,
+    },
+    listTitle: {
+      type: Text,
+    },
+    listBody: {
+      type: Text
     }
   }
 }

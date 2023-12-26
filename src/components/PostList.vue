@@ -4,6 +4,8 @@
     <post-item
         v-for="post in posts"
         :post="post"
+        :listTitle = "listHeader.listTitle"
+        :listBody = "listHeader.listbody"
     />
   </div>
 
@@ -18,7 +20,11 @@ export default {
     posts: {
       type: Array,
       required: true,
-    }
+    },
+    listHeader:{
+      type: Object,
+      required: true
+    },
   }
 }
 </script>

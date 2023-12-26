@@ -1,10 +1,11 @@
 <template>
   <div class="app">
     <post-form
-        @create="createPost"
+        @create1="createPost"
     />
     <post-list
         :posts="posts"
+        :listHeader="listHeader"
     />
 
   </div>
@@ -24,6 +25,7 @@ export default {
         {id: 2, title: 'Post2', body: 'Body2'},
         {id: 3, title: 'Post3', body: 'Body3'},
       ],
+      listHeader: {listTitle: 'Название поста', listbody: 'Описание'},
     }
   },
   methods: {
