@@ -1,6 +1,10 @@
 <template>
   <div class="app">
     <h1>Страница с постами</h1>
+    <my-input
+        v-model="searchQuery"
+    placeholder="Поиск по заголовку поста"
+    />
     <div class="app__btns">
       <my-button
           @click="showDialog"
@@ -20,7 +24,7 @@
     </my-dialog>
 <!--  Для watch функции использовать :posts="posts"  -->
     <post-list
-        :posts="sortedPosts"
+        :posts="sortedAndSearchedPosts"
         @removePost="removePost"
         v-if="!isPostsLoading"
 
@@ -45,6 +49,7 @@ export default {
       dialogVisible: false,
       isPostsLoading: false,
       selectedSort: '',
+      searchQuery: '',
       sortOptions: [
         {value: 'title', name: 'По названию'},
         {value: 'body', name: 'По описанию'}
@@ -87,6 +92,9 @@ export default {
       return [...this.posts].sort((post1, post2) => {
         return post1[this.selectedSort] ?.localeCompare(post2[this.selectedSort])
       })
+    },
+    sortedAndSearchedPosts() {
+      return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
     }
   },
   watch: {
@@ -111,6 +119,7 @@ export default {
 .app__btns {
   display: flex;
   justify-content: space-between;
+  margin: 15px 0;
 }
 
 </style>
