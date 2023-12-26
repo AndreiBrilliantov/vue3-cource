@@ -12,13 +12,17 @@
         type="text"
         placeholder="Body"
     >
-    <button class="btn"
-            @click="createPost"
-            >Create</button>
+    <my-button
+        style="align-self: flex-end; margin-top: 15px"
+        @click="createPost"
+    >
+      Create
+    </my-button>
   </form>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -52,12 +56,5 @@ form {
   padding: 10px 15px;
   margin-top: 15px;
 }
-.btn {
-  margin-top: 15px;
-  align-self: flex-end;
-  padding: 15px;
-  color: teal;
-  border: 1px solid teal;
-  background: none;
-}
+
 </style>

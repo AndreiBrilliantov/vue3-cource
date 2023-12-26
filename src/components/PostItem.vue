@@ -1,11 +1,17 @@
 <template>
   <div class="post">
-    <div>{{ listTitle }}: {{ post.title }}</div>
-    <div>{{ listBody }}: {{ post.body}}</div>
+    <div>
+      <div>{{ listTitle }}: {{ post.title }}</div>
+      <div>{{ listBody }}: {{ post.body}}</div>
+    </div>
+    <div class="post__btns">
+      <my-button>Delete</my-button>
+    </div>
   </div>
 </template>
 
 <script>
+
 export default {
   props: {
     post: {
@@ -13,10 +19,10 @@ export default {
       required: true,
     },
     listTitle: {
-      type: Text,
+      type: String,
     },
     listBody: {
-      type: Text
+      type: String
     }
   }
 }
@@ -27,5 +33,8 @@ export default {
   padding: 5px;
   border: 2px solid teal;
   margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
