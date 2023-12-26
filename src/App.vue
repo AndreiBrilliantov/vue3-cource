@@ -15,9 +15,11 @@
     <post-list
         :posts="posts"
         @removePost="removePost"
+        v-if="!isPostsLoading"
 
         :listHeader="listHeader"
     />
+    <div v-else >Идет загрузка</div>
 
   </div>
 </template>
@@ -25,18 +27,16 @@
 <script>
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
+import axios from "axios";
 export default {
   components: {
     PostList, PostForm
   },
   data() {
     return {
-      posts: [
-        {id: 1, title: 'Post1', body: 'Body1'},
-        {id: 2, title: 'Post2', body: 'Body2'},
-        {id: 3, title: 'Post3', body: 'Body3'},
-      ],
+      posts: [],
       dialogVisible: false,
+      isPostsLoading: false,
 
       listHeader: {listTitle: 'Название поста', listbody: 'Описание'},
     }
@@ -51,9 +51,25 @@ export default {
     },
     showDialog(){
       this.dialogVisible = true;
-    }
+    },
+    async fetchPosts() {
+        try {
+          this.isPostsLoading = true;
+          const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+          this.posts = response.data;
 
-  }
+        } catch (e){
+          alert('Error!')
+        } finally {
+          this.isPostsLoading = false;
+        }
+    },
+
+
+  },
+  mounted() {
+    this.fetchPosts();
+  },
 }
 </script>
 
