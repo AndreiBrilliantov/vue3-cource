@@ -31,7 +31,11 @@
         :listHeader="listHeader"
     />
     <div v-else >Идет загрузка</div>
-
+    <my-pagination-by-page
+      v-model:page = page
+      :totalPages = totalPages
+      :limit = limit
+    />
   </div>
 </template>
 
@@ -50,6 +54,9 @@ export default {
       isPostsLoading: false,
       selectedSort: '',
       searchQuery: '',
+      page: 1,
+      limit: 10,
+      totalPages: 0,
       sortOptions: [
         {value: 'title', name: 'По названию'},
         {value: 'body', name: 'По описанию'}
@@ -72,7 +79,13 @@ export default {
     async fetchPosts() {
         try {
           this.isPostsLoading = true;
-          const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+          const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+            params: {
+              _page: this.page,
+              _limit: this.limit
+            }
+          });
+          this.totalPages = Math.ceil(Number(response.headers['x-total-count']) / this.limit);
           this.posts = response.data;
 
         } catch (e){
@@ -80,7 +93,7 @@ export default {
         } finally {
           this.isPostsLoading = false;
         }
-    },
+    }
 
 
   },
@@ -98,12 +111,16 @@ export default {
     }
   },
   watch: {
+    page() {
+      this.fetchPosts();
+    },
     // selectedSort(newValue){
     //   this.posts.sort((post1, post2) => {
     //     return post1[newValue] ?.localeCompare(post2[newValue])
     //   })
     // }
-  }
+  },
+
 }
 </script>
 
