@@ -16,7 +16,11 @@
         :options="sortOptions"
       />
     </div>
-
+    <my-pagination-by-page
+        v-model:page = page
+        :totalPages = totalPages
+        :limit = limit
+    />
     <my-dialog v-model:show="dialogVisible">
       <post-form
           @create1="createPost"
@@ -31,11 +35,10 @@
         :listHeader="listHeader"
     />
     <div v-else >Идет загрузка</div>
-    <my-pagination-by-page
-      v-model:page = page
-      :totalPages = totalPages
-      :limit = limit
-    />
+
+    <div ref="observer" class="observer">
+
+    </div>
   </div>
 </template>
 
@@ -93,12 +96,42 @@ export default {
         } finally {
           this.isPostsLoading = false;
         }
+    },
+    async loadMorePosts() {
+      try {
+        this.page += 1;
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+          params: {
+            _page: this.page,
+            _limit: this.limit
+          }
+        });
+        this.totalPages = Math.ceil(Number(response.headers['x-total-count']) / this.limit);
+        this.posts = [...this.posts, ...response.data];
+
+      } catch (e){
+        alert('Error!')
+      } finally {
+
+      }
     }
 
 
   },
   mounted() {
     this.fetchPosts();
+
+    const options = {
+      rootMargin: '0px',
+      threshold: 1.0
+    }
+    const callback = (entries, observer) => {
+      if(entries[0].isIntersecting && this.page < this.totalPages){
+        this.loadMorePosts();
+      }
+    };
+    const observer = new IntersectionObserver(callback, options);
+    observer.observe(this.$refs.observer);
   },
   computed: {
     sortedPosts(){
@@ -111,9 +144,9 @@ export default {
     }
   },
   watch: {
-    page() {
-      this.fetchPosts();
-    },
+    // page() {
+    //   this.fetchPosts();
+    // },
     // selectedSort(newValue){
     //   this.posts.sort((post1, post2) => {
     //     return post1[newValue] ?.localeCompare(post2[newValue])
@@ -138,5 +171,8 @@ export default {
   justify-content: space-between;
   margin: 15px 0;
 }
-
+.observer {
+  height: 30px;
+  background: teal;
+}
 </style>
