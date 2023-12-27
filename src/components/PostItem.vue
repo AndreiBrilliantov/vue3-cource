@@ -7,9 +7,14 @@
     </div>
     <div class="post__btns">
       <my-button
+          @click="$router.push(`/posts/${post.id}`)"
+      >
+        Открыть
+      </my-button>
+      <my-button
           @click="$emit('remove', post)"
       >
-        Delete
+        Удалить
       </my-button>
     </div>
   </div>
@@ -41,5 +46,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.post__btns {
+  display: flex;
 }
 </style>
